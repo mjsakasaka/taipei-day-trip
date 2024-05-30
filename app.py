@@ -123,7 +123,6 @@ async def get_mrt_list(request: Request):
 				mrt_spot_dic[tup[1]] = [tup[0]]
 			else:
 				mrt_spot_dic[tup[1]].append(tup[0])
-		print(mrt_spot_dic)
 		mrt_lst = sorted(mrt_spot_dic.keys(), key=lambda x: len(mrt_spot_dic[x]), reverse=True)
 		response_data = {"data": mrt_lst}
 		return JSONResponse(content=response_data)

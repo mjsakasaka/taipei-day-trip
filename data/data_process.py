@@ -13,7 +13,7 @@ def filter_urls(urls_string) -> str:
     return ", ".join(new_file_lst)
 
 # 获取json文件data
-with open('taipei-day-trip/data/taipei-attractions.json', 'r', encoding="utf-8") as file:
+with open('taipei-attractions.json', 'r', encoding="utf-8") as file:
     data = json.load(file)
 results = data["result"]["results"] # 是包含景点字典的列表
 
