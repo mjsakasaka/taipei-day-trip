@@ -2,6 +2,7 @@ from fastapi import *
 from fastapi.responses import FileResponse, JSONResponse
 from typing import Annotated
 from utils import *
+import uvicorn
 app = FastAPI()
 
 # Static Pages (Never Modify Code in this Block)
@@ -133,3 +134,5 @@ async def get_mrt_list(request: Request):
 		}
 		return JSONResponse(status_code=500, content=response_msg)
 
+if __name__ == '__main__':
+    uvicorn.run("app:app", port=8000, reload=True)
