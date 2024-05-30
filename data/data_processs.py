@@ -20,9 +20,9 @@ results = data["result"]["results"] # 是包含景点字典的列表
 # 连接mysql, 创建table
 con = mysql.connector.connect(
     user="root",
-    password="123456",
+    password="!Aa12345",
     host="localhost",
-    database="test"
+    database="tpdaytrip"
 )
 cursor = con.cursor()
 create_table_query = '''

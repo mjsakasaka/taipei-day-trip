@@ -3,9 +3,9 @@ import mysql.connector
 def get_db_data(query, params) -> list:
     con = mysql.connector.connect(
 		user = "root",
-		password = "123456",
+		password = "!Aa12345",
 		host = "localhost",
-		database = "test"
+		database = "tpdaytrip"
 	)
     cursor = con.cursor()
     cursor.execute(query, params)
