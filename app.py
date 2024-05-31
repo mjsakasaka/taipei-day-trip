@@ -112,19 +112,10 @@ async def get_attraction_by_id(
 		})
 async def get_mrt_list(request: Request):
 	try:
-		# 取得所有景點的名稱和捷運站名稱
-		query = "SELECT name, MRT FROM taipei_attractions;"
+		# 取得所有捷運站名稱
+		query = "SELECT MRT, COUNT(MRT) FROM taipei_attractions WHERE NOT MRT IS NULL GROUP BY MRT ORDER BY COUNT(MRT) DESC;"
 		data = get_db_data(query, params=())
-		# 創建字典{"捷運站名": ["經典"]}
-		mrt_spot_dic = {}
-		for tup in data:
-			if tup[1] == None:
-				pass
-			elif not tup[1] in mrt_spot_dic:
-				mrt_spot_dic[tup[1]] = [tup[0]]
-			else:
-				mrt_spot_dic[tup[1]].append(tup[0])
-		mrt_lst = sorted(mrt_spot_dic.keys(), key=lambda x: len(mrt_spot_dic[x]), reverse=True)
+		mrt_lst = [i[0] for i in data]
 		response_data = {"data": mrt_lst}
 		return JSONResponse(content=response_data)
 	except:
