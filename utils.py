@@ -1,5 +1,14 @@
 import mysql.connector
 
+error_content = {
+    "application/json":{
+        "example": {
+            "error": True,
+            "message": "請按照情境提供對應的錯誤訊息"
+        }
+    }
+}
+
 def get_db_data(query, params) -> list:
     con = mysql.connector.connect(
 		user = "root",
@@ -12,6 +21,18 @@ def get_db_data(query, params) -> list:
     data = cursor.fetchall()
     con.close()
     return data
+
+def change_db_data(query, params) -> None:
+	con = mysql.connector.connect(
+		user = "root",
+		password = "!Aa12345",
+		host = "localhost",
+		database = "tpdaytrip"
+	)
+	cursor = con.cursor()
+	cursor.execute(query, params)
+	con.commit()
+	con.close()
 	
 def turn_data_to_list(data) -> list:
 	if not data == []:
