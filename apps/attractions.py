@@ -1,7 +1,7 @@
 from fastapi import *
 from fastapi.responses import JSONResponse
 from typing import Annotated
-from utils import *
+import utils
 
 attrac = APIRouter()
 
@@ -10,7 +10,7 @@ attrac = APIRouter()
 		description="取得不同分頁的旅游景點列表資料，也可以根據標題關鍵字、或捷運站名稱篩選",
 		responses={
 			200: {"description": "正常運作"},
-			500: {"description": "伺服器內部錯誤", "content": error_content}
+			500: {"description": "伺服器內部錯誤", "content": utils.error_content}
 		})
 async def get_attractions(
 	request: Request,
@@ -29,9 +29,9 @@ async def get_attractions(
 		WHERE MRT=%(keyword)s OR name LIKE %(like_keyword)s
 		LIMIT 12 OFFSET %(offset)s
 		'''
-		data = get_db_data(query, {"keyword": keyword, "like_keyword": like_keyword, "offset": offset})
+		data = utils.get_db_data(query, {"keyword": keyword, "like_keyword": like_keyword, "offset": offset})
 		# 將獲取的mysql data轉換成字典列表
-		data_dict_lst = turn_data_to_list(data)
+		data_dict_lst = utils.turn_data_to_list(data)
 		if data != [] and len(data_dict_lst) == 12:
 			next_page = page + 1
 		else:
@@ -52,8 +52,8 @@ async def get_attractions(
 @attrac.get("/api/attraction/{attractionId}", tags=["Attraction"], summary="根據景點編號取得景點資料表",
 		responses={
 			200: {"description": "正常運作"},
-			400: {"description": "景點編號不正確", "content": error_content},
-			500: {"description": "伺服器內部錯誤", "content": error_content}
+			400: {"description": "景點編號不正確", "content": utils.error_content},
+			500: {"description": "伺服器內部錯誤", "content": utils.error_content}
 		})
 async def get_attraction_by_id(
 	request: Request,
@@ -62,9 +62,9 @@ async def get_attraction_by_id(
 	try:
 		query = '''SELECT id, name, CAT, description, address, direction, MRT, latitude, longitude, file
 		FROM taipei_attractions WHERE id=%s'''
-		data = get_db_data(query, (attractionId, ))
+		data = utils.get_db_data(query, (attractionId, ))
 		if not data == []:
-			data_dict = turn_data_to_list(data)[0]
+			data_dict = utils.turn_data_to_list(data)[0]
 			response_data = {"data": data_dict}
 			return JSONResponse(content=response_data)
 		else: # 400错误处理：景點編號不正確

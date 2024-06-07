@@ -1,4 +1,5 @@
 import mysql.connector
+from mysql.connector import pooling
 
 error_content = {
     "application/json":{
@@ -9,30 +10,38 @@ error_content = {
     }
 }
 
+dbconfig = {
+	"user": "root",
+	"password": "!Aa12345",
+	"host": "localhost",
+	"database": "tpdaytrip"
+}
+
+pool = pooling.MySQLConnectionPool(pool_name="mypool", pool_size=5, **dbconfig)
+
 def get_db_data(query, params) -> list:
-    con = mysql.connector.connect(
-		user = "root",
-		password = "!Aa12345",
-		host = "localhost",
-		database = "tpdaytrip"
-	)
-    cursor = con.cursor()
-    cursor.execute(query, params)
-    data = cursor.fetchall()
-    con.close()
-    return data
+	try:
+		con = pool.get_connection()
+		cursor = con.cursor()
+		cursor.execute(query, params)
+		data = cursor.fetchall()
+		cursor.close()
+		con.close()
+		return data
+	except mysql.connector.Error as e:
+		print("Error while getting database data: ", e)
 
 def change_db_data(query, params) -> None:
-	con = mysql.connector.connect(
-		user = "root",
-		password = "!Aa12345",
-		host = "localhost",
-		database = "tpdaytrip"
-	)
-	cursor = con.cursor()
-	cursor.execute(query, params)
-	con.commit()
-	con.close()
+	try:
+		con = pool.get_connection()
+		cursor = con.cursor()
+		cursor.execute(query, params)
+		con.commit()
+		cursor.close()
+		con.close()
+		return
+	except mysql.connector.Error as e:
+		print("Error while getting database data: ", e)
 	
 def turn_data_to_list(data) -> list:
 	if not data == []:
