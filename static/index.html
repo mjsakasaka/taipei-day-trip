@@ -4,8 +4,209 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/index/index_styles.css">
 </head>
 <body>
-  
+  <div class="wrapper">
+    <div class="navigation">
+      <div class="nav-container">
+        <div class="nav-title">台北一日遊</div>
+        <div class="nav-right-container">
+          <div>預定行程</div>
+          <div>登入/註冊</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-section"> 
+      <img src="/static/index/welcome.png">
+      <div class="slogan-container">
+        <div class="slogan">
+          <div class="slogan-header">輕鬆享受台北一日悠閒</div>
+          <div class="slogan-body">探索每個角落，體驗城市的深度旅遊行程</div>
+        </div>
+        <div class="search-bar">
+          <input class="search-input" id="search-input" placeholder="輸入景點名稱查詢">
+          <div class="search-btn" id="search-btn">
+            <img src="/static/index/icon_search.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="main-section">
+        <div class="list-bar">
+          <div class="list-left-container">
+            <img src="/static/index/arrow_left.png" id="left-btn" class="list-left-btn-img">
+          </div>
+          <div class="list-container" id="list-container">
+            <div class="list-items" id="list-items">
+              <!-- <div class="list-item">忠孝復興</div> -->
+            </div>
+          </div>
+          <div class="list-right-container">
+            <img src="/static/index/arrow_right.png" id="right-btn" class="list-right-btn-img">
+          </div>
+        </div>
+        <div class="attractions" id="attractions">
+          <!-- <div class="attr-box">
+            <div class="attr-pic">
+              <img src="img.png">
+              <div class="attr-name"><div class="attr-name-text">平安钟平安钟平安钟平安钟平安钟平安钟平安钟平安钟</div></div>
+            </div>
+            <div class="attr-details">
+              <div class="attr-mrt">忠孝復興忠孝復興忠孝復興忠孝復興</div>
+              <div class="attr-cat">公共藝術</div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
+
+  <script>
+    // fetch attraction API
+    let isLoading = true;
+    let nextPage = 0;
+    function createAttrItem(attrData) {
+      if (attrData.length == 0){
+        return false;
+      }
+      for (let i = 0; i < attrData.length; i++) {
+        let attrName = attrData[i].name;
+        let attrMRT = attrData[i].mrt;
+        let attrCAT = attrData[i].category;
+        let attrImgUrl = attrData[i].images[0];
+        let attrsDiv = document.getElementById("attractions");
+        // outer attr-box
+        let attrBoxDiv = document.createElement("div");
+        attrBoxDiv.className = "attr-box";
+        attrsDiv.appendChild(attrBoxDiv);
+        // picture part
+        let attrPicDiv = document.createElement("div");
+        attrPicDiv.className = "attr-pic";
+        attrBoxDiv.appendChild(attrPicDiv);
+        let attrPicImg = document.createElement("img");
+        attrPicImg.src = attrImgUrl;
+        attrPicDiv.appendChild(attrPicImg);
+        let attrNameDiv = document.createElement("div");
+        attrNameDiv.className = "attr-name";
+        attrPicDiv.appendChild(attrNameDiv);
+        let attrNameTextDiv = document.createElement("div");
+        attrNameTextDiv.className = "attr-name-text";
+        attrNameTextDiv.innerHTML = attrName;
+        attrNameDiv.appendChild(attrNameTextDiv);
+        // detail part
+        let attrDetailsDiv = document.createElement("div");
+        attrDetailsDiv.className = "attr-details";
+        attrBoxDiv.appendChild(attrDetailsDiv);
+        let attrMRTDiv = document.createElement("div");
+        attrMRTDiv.className = "attr-mrt";
+        attrMRTDiv.innerHTML = attrMRT;
+        attrDetailsDiv.appendChild(attrMRTDiv);
+        let attrCATDiv = document.createElement("div");
+        attrCATDiv.className = "attr-cat";
+        attrCATDiv.innerHTML = attrCAT;
+        attrDetailsDiv.appendChild(attrCATDiv);
+      }
+    }
+    function loadItems(page, url) {
+      isLoading = true;
+      url = url + page.toString();
+      fetch(url).then(function(response){
+        return response.json();
+      }).then(function(data){
+        let attrData = data.data;
+        createAttrItem(attrData);
+        nextPage = data.nextPage;
+        isLoading = false;
+      });
+    }
+    let attrUrl = "/api/attractions?page=";
+    loadItems(nextPage, attrUrl);
+
+    // fetch for more data automatically
+    var intersectionObserver = new IntersectionObserver(
+    function (entries) {
+      if (entries[0].intersectionRatio <= 0) return;
+      if (isLoading) return;
+      if (nextPage != null){
+        loadItems(nextPage, attrUrl);
+      } else return;
+    });
+      // start observing
+    intersectionObserver.observe(document.getElementById("footer"));
+
+    // search function
+    function loadSearch(keyword){
+      isLoading = true;
+      let attrsDiv = document.getElementById("attractions");
+      attrsDiv.innerHTML = "";
+      attrUrl = "/api/attractions?keyword=" + keyword + "&page=";
+      nextPage = 0;
+      loadItems(nextPage, attrUrl); // includes "isLoading = false"
+    }
+    document.getElementById("search-input")
+    .addEventListener("click", function(event){
+      this.placeholder = "";
+    })
+    document.getElementById("search-btn")
+    .addEventListener("click", function(event){
+      let keyword = document.getElementById("search-input").value;
+      loadSearch(keyword);
+    });
+
+    // mrt name list and filter by mrt name
+    let mrtLength;
+    function renderMRT(){
+      let mrtUrl = "/api/mrts"
+      fetch(mrtUrl).then(function(response){
+        return response.json();
+      }).then(function(data){
+        let mrtArray = data.data;
+        mrtLength = mrtArray.length;
+        for (i in mrtArray){
+          let listItemDiv = document.createElement("div");
+          listItemDiv.className = "list-item";
+          listItemDiv.innerHTML = mrtArray[i];
+          listItemDiv.id = "list-item" + i.toString();
+          let listItemsDiv = document.getElementById("list-items");
+          listItemsDiv.appendChild(listItemDiv);
+        }
+      }).then(function(event){ // filter by mrt name
+        for (let i = 0; i < mrtLength; i++) {
+          document.getElementById("list-item" + i.toString())
+          .addEventListener("click", function(event){
+            let keyword = document.getElementById("list-item" + i.toString()).innerHTML;
+            document.getElementById("search-input").value = keyword;
+            loadSearch(keyword);
+          });
+        }
+      });
+    }
+    renderMRT();
+
+    // scroll for more mrt names
+    let listItems = document.getElementById("list-items");
+    let leftBtn = document.getElementById("left-btn");
+    let rightBtn = document.getElementById("right-btn");
+    let listContainer = document.getElementById("list-container");
+    let scrollAmount = listContainer.offsetWidth * 0.8;
+    rightBtn.addEventListener("click", function(event){
+      listItems.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth"
+      });
+    });
+    leftBtn.addEventListener("click", function(event){
+      listItems.scrollBy({
+        left: -scrollAmount,
+        behavior: "smooth"
+      });
+    });
+  </script>
 </body>
 </html>
