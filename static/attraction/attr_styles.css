@@ -19,6 +19,7 @@ body{
     z-index: 1000;
     background-color: #FFFFFF;
     border-bottom: 1px solid #E8E8E8;
+    box-sizing: border-box;
 }
 .nav-container{
     width: 1200px;
@@ -56,7 +57,7 @@ body{
 .separator{
     margin-top: 54px;
     margin-bottom: 0px;
-    border: 0.5px solid #FFFFFF;
+    border: none;
 
 }
 
@@ -355,6 +356,9 @@ body{
 
 
 @media (max-width: 800px){
+    .main{
+        padding-top: 0px;
+    }
     .main-section{
         width: 100%;
     }
@@ -389,7 +393,7 @@ body{
 }
 
 
-@media (max-width: 400px){
+@media (max-width: 500px){
     .profile-l{
         height: 350px;
     }
