@@ -35,6 +35,7 @@ body{
     font-style: normal;
     line-height: 34px;
     color: #448899;
+    cursor: pointer;
 }
 .nav-right-container{
     justify-self: end;
@@ -226,6 +227,9 @@ body{
     border-radius: 5px;
     outline: 1px solid #E8E8E8;
     outline-offset: -1px;
+}
+.attr-box:hover {
+    opacity: 75%;
 }
 .attr-pic{
     width: 100%;

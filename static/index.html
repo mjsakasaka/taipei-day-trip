@@ -13,7 +13,7 @@
   <div class="wrapper">
     <div class="navigation">
       <div class="nav-container">
-        <div class="nav-title">台北一日遊</div>
+        <div class="nav-title" id="nav-title">台北一日遊</div>
         <div class="nav-right-container">
           <div>預定行程</div>
           <div>登入/註冊</div>
@@ -80,10 +80,14 @@
         let attrMRT = attrData[i].mrt;
         let attrCAT = attrData[i].category;
         let attrImgUrl = attrData[i].images[0];
+        let attrId = attrData[i].id.toString();
         let attrsDiv = document.getElementById("attractions");
         // outer attr-box
         let attrBoxDiv = document.createElement("div");
         attrBoxDiv.className = "attr-box";
+        attrBoxDiv.onclick = function redirect() {
+          window.location.href = "/attraction/" + attrId;
+        };
         attrsDiv.appendChild(attrBoxDiv);
         // picture part
         let attrPicDiv = document.createElement("div");
@@ -126,10 +130,10 @@
       });
     }
     let attrUrl = "/api/attractions?page=";
-    loadItems(nextPage, attrUrl);
+    loadItems(page=0, attrUrl);
 
     // fetch for more data automatically
-    var intersectionObserver = new IntersectionObserver(
+    let intersectionObserver = new IntersectionObserver(
     function (entries) {
       if (entries[0].intersectionRatio <= 0) return;
       if (isLoading) return;
@@ -176,7 +180,7 @@
           let listItemsDiv = document.getElementById("list-items");
           listItemsDiv.appendChild(listItemDiv);
         }
-      }).then(function(event){ // filter by mrt name
+      }).then(function(){ // filter by mrt name
         for (let i = 0; i < mrtLength; i++) {
           document.getElementById("list-item" + i.toString())
           .addEventListener("click", function(event){
@@ -207,6 +211,11 @@
         behavior: "smooth"
       });
     });
+    
+    // link on website title
+    document.getElementById("nav-title").addEventListener("click", function() {
+      window.location.href = "/";
+    })
   </script>
 </body>
 </html>

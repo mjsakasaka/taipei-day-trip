@@ -41,7 +41,7 @@ def change_db_data(query, params) -> None:
 		con.close()
 		return
 	except mysql.connector.Error as e:
-		print("Error while getting database data: ", e)
+		print("Error while changing database data: ", e)
 	
 def turn_data_to_list(data) -> list:
 	if not data == []:
