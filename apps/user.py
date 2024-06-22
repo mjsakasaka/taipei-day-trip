@@ -93,7 +93,7 @@ class UserInput(BaseModel):
 async def sign_in(request: Request, user_input: UserInput):
 	try:
 		# check email and password
-		query = "SELECT id, name, email, hashed_pwd FROM userinfo WHERE email = %s"
+		query = "SELECT id, name, email, hashed_pwd FROM userInfo WHERE email = %s"
 		user_info = utils.get_db_data(query, (user_input.email, ))
 		response_msg = {
 			"error": True,
