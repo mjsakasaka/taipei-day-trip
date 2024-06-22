@@ -1,0 +1,32 @@
+<div class="dialog-mask" id="dialog-mask"></div>
+<!-- popup dialog: signin -->
+<div class="dialog" id="dialog-signin">
+  <div class="dia-dec-bar"></div>
+  <div class="dia-close" onclick="closeDialog()">
+    <img src="/static/shared/icon_close.png">
+  </div>
+  <div class="dia-main">
+    <div class="dia-title">登入會員帳號</div>
+    <input class="dia-field" type="email" id="signin-email" name="signin-email" placeholder="輸入電子信箱"></input>
+    <input class="dia-field" type="password" id="signin-pwd" name="signin-pwd" placeholder="輸入密碼"></input>
+    <input class="dia-btn" type="button" id="signin-btn" name="signin-btn" value="登入帳戶" onclick="signIn()">
+    <div class="dia-text dia-text-click" id="signin-text" onclick="changeToSignup()">還沒有帳戶？點此註冊</div>
+    <div class="dia-text" style="display: none;" id="signin-msg"></div>
+  </div>
+</div>
+<!-- signup -->
+<div class="dialog" id="dialog-signup">
+  <div class="dia-dec-bar"></div>
+  <div class="dia-close" onclick="closeDialog()">
+    <img src="/static/shared/icon_close.png">
+  </div>
+  <div class="dia-main" id="dia-main">
+    <div class="dia-title">註冊會員帳號</div>
+    <input class="dia-field" type="name" id="signup-name" name="signup-name" placeholder="輸入姓名"></input>
+    <input class="dia-field" type="email" id="signup-email" name="signup-email" placeholder="輸入電子信箱"></input>
+    <input class="dia-field" type="password" id="signup-pwd" name="signup-pwd" placeholder="輸入密碼"></input>
+    <input class="dia-btn" type="button" id="signup-btn" name="signup-btn" value="註冊新帳戶" onclick="signUp()">
+    <div class="dia-text dia-text-click" id="signup-text" onclick="changeToSignin()">已經有帳戶了？點此登入</div>
+    <div class="dia-text" style="display: none;" id="signup-msg"></div>
+  </div>
+</div>

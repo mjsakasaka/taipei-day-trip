@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/static/index/index_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/nav_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/dialog_styles.css">
 </head>
 <body>
   <div class="wrapper">
@@ -15,8 +17,8 @@
       <div class="nav-container">
         <div class="nav-title" id="nav-title">台北一日遊</div>
         <div class="nav-right-container">
-          <div>預定行程</div>
-          <div>登入/註冊</div>
+          <div class="nav-right" id="nav-booking">預定行程</div>
+          <div class="nav-right" id="nav-signin" data-status="false">登入/註冊</div>
         </div>
       </div>
     </div>
@@ -65,6 +67,7 @@
       </div>
     </div>
   </div>
+  <div id="popup-dialog"></div>
   <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
 
   <script>
@@ -211,11 +214,8 @@
         behavior: "smooth"
       });
     });
-    
-    // link on website title
-    document.getElementById("nav-title").addEventListener("click", function() {
-      window.location.href = "/";
-    })
+      
   </script>
+  <script src="/static/shared/shared_js.js"></script>
 </body>
 </html>

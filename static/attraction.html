@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/static/attraction/attr_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/nav_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/dialog_styles.css">
 </head>
 <body>
   <div class="wrapper">
@@ -15,8 +17,8 @@
       <div class="nav-container">
         <div class="nav-title" id="nav-title">台北一日遊</div>
         <div class="nav-right-container">
-          <div>預定行程</div>
-          <div>登入/註冊</div>
+          <div class="nav-right" id="nav-booking">預定行程</div>
+          <div class="nav-right" id="nav-signin" data-status="false">登入/註冊</div>
         </div>
       </div>
     </div>
@@ -79,9 +81,10 @@
         </div>
       </div>
     </div>
-
   </div>
+  <div id="popup-dialog"></div>
   <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
+  
   <script>
     function syncDate() {
       let dateInput = document.getElementById("bk-input-date");
@@ -204,27 +207,7 @@
       window.location.href = "/";
     })
 
-    // // image slideshow
-    // function slideshow(direction) {
-    //   getAttrApi(attrUrl).then((data) => {
-    //     let imgArr = data.data.images;
-    //     let activeImgDiv = document.getElementById("profile-img-active");
-    //     let currentImgId = parseInt(activeImgDiv.getAttribute("data-id"));
-    //     let nextImgId;
-
-    //     // fade-in/fade-out effect
-    //     activeImgDiv.style.opacity = 0;
-    //     // imgDiv.style.opacity = 0;
-    //     // function onTransitionEnd() {
-    //     //   imgDiv.src = imgArr[nextImgId];
-    //     //   imgDiv.style.opacity = 1;
-    //     // }
-    //     // imgDiv.addEventListener("transitionend", onTransitionEnd, {once: true});
-    //     // imgDiv.setAttribute("data-id", nextImgId);
-
-    //   });
-    // }
-
   </script>
+  <script src="/static/shared/shared_js.js" defer></script>
 </body>
 </html>
