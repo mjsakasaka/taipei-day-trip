@@ -32,9 +32,9 @@ async def booking(request: Request):
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 
+app.include_router(user, tags=["User"])
 app.include_router(attrac)
 app.include_router(mrt)
-app.include_router(user)
 
 
 if __name__ == '__main__':

@@ -4,8 +4,210 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Attraction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/attraction/attr_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/nav_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/dialog_styles.css">
 </head>
 <body>
+  <div class="wrapper">
+    <div class="navigation">
+      <div class="nav-container">
+        <div class="nav-title" id="nav-title">台北一日遊</div>
+        <div class="nav-right-container">
+          <div class="nav-right" id="nav-booking">預定行程</div>
+          <div class="nav-right" id="nav-signin" data-status="false">登入/註冊</div>
+        </div>
+      </div>
+    </div>
+    <hr class="separator">
+    <div class="main">
+      <div class="main-section">
+        <div class="profile">
+          <div class="profile-l" id="profile-l">
+            <!-- <img src="" class="profile-img" data-id=0 id="profile-img-active"> -->
+            <!-- <img src="" class="profile-img" data-id=1> -->
+            <img src="/static/attraction/left_arrow.png" class="profimg-l-arrow" id="profimg-l-arrow">
+            <div class="profbtn-mid-container">
+              <div class="profbtn-circles" id="profbtn-circles">
+                <!-- <img src="/static/attraction/circle_current.png" class="circle" id="circle0">
+                <img src="/static/attraction/circle.png" class="circle" id="circle1">
+                <img src="/static/attraction/circle.png" class="circle" id="circle2"> -->
+              </div>
+            </div>
+            <img src="/static/attraction/right_arrow.png" class="profimg-r-arrow" id="profimg-r-arrow">
+          </div>
+          <div class="profile-r">
+            <div class="prof-title" id="prof-title"></div>
+            <div class="prof-loca" id="prof-loca"></div>
+            <div class="bk-form">
+              <div class="bk-field">訂購導覽行程</div>
+              <div class="bk-slogan">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+              <div class="bk-field-date">選擇日期：
+                <div class="bk-custom-date">
+                  <div class="bk-custom-date-text" class="bk-custom-date-text" id="bk-custom-date-text">yyyy/mm/dd</div>
+                  <img src="/static/attraction/icon_calendar.png" class="bk-date-icon">
+                  <input type="date" class="bk-input-date" id="bk-input-date" onchange="syncDate()">
+                </div>
+              </div>
+              <div class="bk-field">選擇時間：
+                <label class="bk-time-checkbox">
+                  <input type="radio" class="checkbox" id="earlier-half" name="bk-time-checkbox" value="early" onclick="showprice()" checked>
+                  <span class="checkmark"></span>
+                  <span class="bk-text">上半天</span>
+                </label>
+                <label class="bk-time-checkbox">
+                  <input type="radio" class="checkbox" id="later-half" name="bk-time-checkbox" value="late" onclick="showprice()">
+                  <span class="checkmark"></span>
+                  <span class="bk-text">下半天</span>
+                </label>
+              </div>
+              <div class="bk-field">導覽費用：
+                <div class="bk-text" id="bk-price-text">新台幣 2000 元</div>
+              </div>
+              <button class="bk-btn"><span>開始預約行程</span></button>
+            </div>
+          </div>
+        </div>
+        <hr class="separator-mid">
+        <div class="infos">
+          <div class="info-content" id="description"></div>
+          <div class="info-title">景點地址：</div>
+          <div class="info-content" id="address"></div>
+          <div class="info-title">交通方式：</div>
+          <div class="info-content" id="transport"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="popup-dialog"></div>
+  <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
   
+  <script>
+    function syncDate() {
+      let dateInput = document.getElementById("bk-input-date");
+      let dateCustom = document.getElementById("bk-custom-date-text");
+      let date = dateInput.value
+      if (date != ""){
+        let newDate = date.slice(0, 4) + '/' + date.slice(5, 7) + '/' + date.slice(8);
+        dateCustom.innerHTML = newDate;
+      } else {
+        dateCustom.innerHTML = "yyyy/mm/dd";
+      }
+    }
+    function getAttrApi(url) {
+      return fetch(url).then((response) => response.json())
+    }
+
+    // fetch attraction api
+    let pathname = window.location.pathname;
+    let regex = /^\/attraction\/(\d{1,3})$/;
+    let match = pathname.match(regex);
+    let attrId;
+    if (match == null) {
+      window.location.href = "/"
+    } else {
+      attrId = match[1];
+    }
+    let attrUrl = "/api/attraction/" + attrId;
+    getAttrApi(attrUrl).then((data) => {
+      if (data.error) {
+        window.location.href = "/"
+      } else {
+        data = data.data;
+        // name
+        document.getElementById("prof-title").innerHTML = data.name;
+        // category at location
+        document.getElementById("prof-loca").innerHTML = data.category + " at " + data.mrt;
+        // description
+        document.getElementById("description").innerHTML = data.description;
+        // address
+        document.getElementById("address").innerHTML = data.address;
+        // transport
+        document.getElementById("transport").innerHTML = data.transport;
+        // images
+        let imgArr = data.images;
+        let profLeftDiv = document.getElementById("profile-l");
+        let circlesDiv = document.getElementById("profbtn-circles");
+        for (i in imgArr) {
+          // create images
+          let imgDiv = document.createElement("img");
+          imgDiv.src = imgArr[i];
+          imgDiv.className = "profile-img";
+          imgDiv.setAttribute("data-index", i);
+          profLeftDiv.appendChild(imgDiv);
+          // create circles
+          let circleImgDiv = document.createElement("img");
+          circleImgDiv.src = "/static/attraction/circle.png";
+          circleImgDiv.className = "circle";
+          circleImgDiv.id = "circle" + i.toString();
+          circlesDiv.appendChild(circleImgDiv);
+        }
+        firstImg = document.getElementsByClassName("profile-img")[0];
+        firstImg.id = "profile-img-active";
+        firstImg.classList.add("active");
+        document.getElementById("circle0").src = "/static/attraction/circle_current.png"
+      }
+    })
+
+    // image slideshow
+    function slideshow(direction) {
+      // get the index of current active img
+      let currentImg = document.getElementById("profile-img-active");
+      let currentImgIndex = parseInt(currentImg.getAttribute("data-index"));
+      // get the index of next img
+      let nextImgIndex;
+      let imgLst = document.getElementsByClassName("profile-img");
+      if (direction == "left") {
+          if (currentImgIndex == 0) {
+            nextImgIndex = imgLst.length - 1;
+          } else {
+            nextImgIndex = currentImgIndex - 1;
+          }
+        } else if (direction == "right") {
+          if (currentImgIndex == imgLst.length - 1) {
+            nextImgIndex = 0;
+          } else {
+            nextImgIndex = currentImgIndex + 1;
+          }
+        }
+        // change active img
+        imgLst[currentImgIndex].classList.remove("active");
+        imgLst[currentImgIndex].removeAttribute("id");
+        imgLst[nextImgIndex].classList.add("active");
+        imgLst[nextImgIndex].id = "profile-img-active";
+        // change circles pattern
+        document.getElementById("circle" + currentImgIndex.toString()).src = "/static/attraction/circle.png";
+        document.getElementById("circle" + nextImgIndex.toString()).src = "/static/attraction/circle_current.png";
+
+    }
+    document.getElementById("profimg-l-arrow").addEventListener("click", function(event){
+      slideshow("left");
+    });
+    document.getElementById("profimg-r-arrow").addEventListener("click", function(event){
+      slideshow("right");
+    });
+
+    // time selection
+    function showprice() {
+      let early = document.getElementById("earlier-half");
+      let late = document.getElementById("later-half");
+      let price = document.getElementById("bk-price-text");
+      if (early.checked) {
+        price.innerHTML = "新台幣 2000 元";
+      } else if (late.checked) {
+        price.innerHTML = "新台幣 2500 元"
+      }
+    }
+
+    // link on website title
+    document.getElementById("nav-title").addEventListener("click", function() {
+      window.location.href = "/";
+    })
+
+  </script>
+  <script src="/static/shared/shared_js.js" defer></script>
 </body>
 </html>

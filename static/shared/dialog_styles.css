@@ -1,0 +1,96 @@
+.dialog-mask{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    opacity: 25%;
+    z-index: 1000;
+}
+.dialog{
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    /* height: 275px; */
+    background: #FFFFFF;
+    z-index: 1001;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0px 4px 60px 0 #AAAAAA;
+    overflow: hidden;
+}
+.dia-dec-bar{
+    width: 340px;
+    height: 10px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%)
+}
+.dia-close{
+    position: inherit;
+    top: 20px;
+    left: 300px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.dia-close img{
+    width: 16px;
+    height: 16px;
+}
+.dia-main{
+    margin: 15px;
+    width: 310px;
+    /* height: 235px; */
+}
+.dia-title{
+    width: 310px;
+    height: 32px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    color: #666666;
+}
+.dia-field{
+    margin-top: 10px;
+    width: 310px;
+    height: 47px;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+    font-size: 16px;
+    text-indent: 15px;
+    padding-block: 0px;
+    padding-inline: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.dia-btn{
+    margin-top: 10px;
+    width: 310px;
+    height: 47px;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #448899;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 19px;
+    font-weight: 400;
+    cursor: pointer;
+}
+.dia-text{
+    margin-top: 10px;
+    height: 22px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #666666;
+}
+.dia-text-click{
+    cursor: pointer;
+}
