@@ -1,3 +1,26 @@
+// check sign-in status
+document.addEventListener("DOMContentLoaded", function () {
+    let token = localStorage.getItem("token");
+    let navSigninDiv = document.getElementById("nav-signin");
+    if (token) {
+        navSigninDiv.innerHTML = "登出系統";
+        navSigninDiv.setAttribute("data-status", "true");
+        let auth = "Bearer " + token;
+        fetch("/api/user/auth", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            if (data != null) {
+                navSigninDiv.innerHTML = "登出系統";
+                navSigninDiv.setAttribute("data-status", "true");
+            } else {
+                navSigninDiv.innerHTML = "登入/註冊";
+                navSigninDiv.setAttribute("data-status", "false");
+            }
+        })
+    }
+});
+
+
 // link on website title
 document.getElementById("nav-title").addEventListener("click", function() {
     window.location.href = "/";
@@ -16,15 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // show dialog
 function showSigninDialog() {
-    document.getElementById("dialog-mask").style.display = "block";
-    document.getElementById("dialog-signin").style.display = "block";
+    document.getElementById("popup-dialog").style.display = "block";
 }
 
 // close dialog
 function closeDialog() {
-    document.getElementById("dialog-mask").style.display = "none";
-    document.getElementById("dialog-signin").style.display = "none";
-    document.getElementById("dialog-signup").style.display = "none";
+    document.getElementById("popup-dialog").style.display = "none";
+
 }
 
 // change to signup
@@ -45,21 +66,7 @@ function signOut () {
     location.reload();
 }
 
-// check sign-in status
-let auth = "Bearer " + localStorage.getItem("token");
-fetch("/api/user/auth", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
-    return response.json();
-}).then(function (data) {
-    if (data != null) {
-        let navSigninDiv = document.getElementById("nav-signin");
-        navSigninDiv.innerHTML = "登出系統";
-        navSigninDiv.setAttribute("data-status", "true");
-    } else {
-        let navSigninDiv = document.getElementById("nav-signin");
-        navSigninDiv.innerHTML = "登入/註冊";
-        navSigninDiv.setAttribute("data-status", "false");
-    }
-})
+
 
 // sign-in/sign-out button
 document.getElementById("nav-signin").addEventListener("click", function () {
