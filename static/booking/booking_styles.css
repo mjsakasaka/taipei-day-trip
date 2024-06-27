@@ -1,0 +1,250 @@
+.main{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.main-section{
+    width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.booking{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.headline{
+    width: 980px;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 27px;
+    color: #666666;
+}
+.section{
+    width: 980px;
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.sec-pic{
+    width: 250px;
+    height: 200px;
+}
+.sec-pic-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.sec-infor{
+    width: 700px;
+    min-height: 170px;
+    margin-left: 30px;
+    position: relative;
+}
+.sec-del-icon{
+    position: absolute;
+    left: calc(100% - 30px);
+    top: 0px;
+    width: 30px;
+    height: 30px;
+}
+.sec-del-icon img{
+    width: 30px;
+    height: 30px;
+}
+.sec-frame-title{
+    width: 100%;
+    height: 24px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #448899;
+    margin-bottom: 10px;
+}
+.sec-frame{
+    width: 100%;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #666666;
+    margin-top: 10px;
+}
+.sec-frame-attri{
+    font-weight: 700;
+}
+
+.separator-mid{
+    margin-bottom: 40px;
+    margin-top: 0px;
+    border: 0.5px solid #E8E8E8;
+    width: 1200px;
+}
+
+.context{
+    width: 980px;
+    color: #666666;
+    margin-bottom: 40px;
+}
+.context-title{
+    width: 100%;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
+.field{
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 38px;
+    margin-top: 15px;
+}
+.input-field{
+    width: 200px;
+    height: 38px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    padding: 10px;
+    color: #000000;
+    box-sizing: border-box;
+}
+.context-text{
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    margin-top: 15px;
+}
+.confirm{
+    width: 980px;
+}
+.confirm-block{
+    display: flex;
+    justify-content: end;
+}
+.total-price{
+    width: 174px;
+    height: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: end;
+    color: #666666;
+}
+.confirm-btn{
+    width: 173px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: #448899;
+    color: #FFFFFF;
+    text-align: center;
+    /* padding: 0px 20px 0px 20px; */
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 36px;
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+.empty-state{
+    display: none;
+    width: 980px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #666666;
+    margin-top: 30px;
+}
+
+
+@media (max-width: 1200px){
+    .main-section{
+        width: 100%;
+    }
+    .headline{
+        width: 90%;
+    }
+    .section{
+        width: 90%;
+        margin-bottom: 40px;
+    }
+    .sec-infor{
+        flex: auto;
+        width: auto;
+    }
+    
+    .separator-mid{
+        width: 90%;
+    }
+
+    .context{
+        width: 90%;
+    }
+    .confirm{
+        width: 90%;
+    }
+
+    
+    .empty-state{
+        width: 90%;
+    }
+}
+
+
+@media (max-width: 700px){
+    .main{
+        padding-top: 40px;
+    }
+    .main-section{
+        width: 100%;
+    }
+    .section{
+        flex-wrap: wrap;
+        margin-bottom: 0px;
+    }
+    .sec-pic{
+        width: 100%;
+    }
+    .sec-infor{
+        width: 100%;
+        min-height: auto;
+        padding-bottom: 30px;
+        margin: 30px 0px 30px 0px;
+    }
+    .sec-del-icon{
+        top: calc(100% - 30px);
+    }
+
+}
+
+
+@media (max-width: 500px){
+    .headline{
+        width: 95%;
+        min-width: 340px;
+    }
+    .section{
+        width: 95%;
+        min-width: 340px;
+    }
+    .sec-pic{
+        width: 100%;
+        min-width: 340px;
+    }
+    .separator-mid{
+        width: 95%;
+        min-width: 340px;
+    }
+    .context{
+        width: 95%;
+        min-width: 340px;
+    }
+    .confirm{
+        width: 95%;
+        min-width: 340px;
+    }
+}

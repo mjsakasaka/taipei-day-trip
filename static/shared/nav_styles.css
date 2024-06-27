@@ -5,9 +5,6 @@ body{
     flex-direction: column;
     min-height: 100vh;
 }
-.wrapper{
-    flex: 1;
-}
 
 .navigation{
     display: flex;
@@ -59,15 +56,25 @@ body{
     text-decoration: underline;
 }
 
+.separator{
+    margin-top: 54px;
+    margin-bottom: 0px;
+    border: none;
+}
+
+
 .footer{
+    flex: 1;
     width: 100%;
-    height: 104px;
+    height: auto;
+    min-height: 24px;
     background-color: #757575;
     display: flex;
-    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
     justify-content: center;
     color: #FFFFFF;
     font-size: 16px;
     font-weight: 700;
-    line-height: 13.3px;
+    line-height: 24px;
 }
