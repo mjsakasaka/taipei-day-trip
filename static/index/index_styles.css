@@ -1,14 +1,3 @@
-body{
-    margin: 0;
-    font-family: 'Noto Sans TC', sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-.wrapper{
-    flex: 1;
-}
-
 .hero-section{
     margin-top: 54px;
     height: 320px;
@@ -272,19 +261,6 @@ body{
     font-weight: 500;
     text-align: right;
     color: #757575;
-}
-
-.footer{
-    width: 100%;
-    height: 104px;
-    background-color: #757575;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 13.3px;
 }
 
 

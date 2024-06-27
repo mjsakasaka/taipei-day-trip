@@ -4,8 +4,151 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/shared/nav_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/dialog_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/booking/booking_styles.css">
+
 </head>
 <body>
+  <div class="wrapper">
+    <div class="navigation">
+      <div class="nav-container">
+        <div class="nav-title" id="nav-title">台北一日遊</div>
+        <div class="nav-right-container">
+          <div class="nav-right" id="nav-booking">預定行程</div>
+          <div class="nav-right" id="nav-signin" data-status="false"></div>
+        </div>
+      </div>
+    </div>
+    <hr class="separator">
+    <div class="main">
+      <div class="main-section">
+        <div class="headline" id="headline"></div>
+        <div class="booking" id="booking-infor">
+          <div class="section">
+            <div class="sec-pic">
+              <img class="sec-pic-img" id="sec-pic-img">
+            </div>
+            <div class="sec-infor">
+              <div class="sec-del-icon" onclick="deleteBooking()">
+                <img src="/static/booking/icon_delete.png">
+              </div>
+              <div class="sec-frame-title"><span>台北一日遊：</span><span id="sec-frame-name"></span></div>
+              <div class="sec-frame"><span class="sec-frame-attri">日期：</span><span id="infor-date"></span></div>
+              <div class="sec-frame"><span class="sec-frame-attri">時間：</span><span id="infor-time"></span></div>
+              <div class="sec-frame"><span class="sec-frame-attri">費用：</span><span id="infor-price"></span></div>
+              <div class="sec-frame"><span class="sec-frame-attri">地點：</span><span id="infor-address"></span></div>
+            </div>
+          </div>
+          <hr class="separator-mid">
+          <div class="context">
+            <div class="context-title">您的聯絡資訊</div>
+            <div class="field">聯絡姓名：<input class="input-field" id="contact-input-name"></div>
+            <div class="field">連絡信箱：<input class="input-field" id="contact-input-email"></div>
+            <div class="field">手機號碼：<input class="input-field" id="contact-input-phone"></div>
+            <div class="context-text">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+          </div>
+          <hr class="separator-mid">
+          <div class="context">
+            <div class="context-title">信用卡付款資訊</div>
+            <div class="field">卡片號碼：<input class="input-field" placeholder="**** **** **** ****"></div>
+            <div class="field">過期時間：<input class="input-field" placeholder="MM/YY"></div>
+            <div class="field">驗證密碼：<input class="input-field" placeholder="CVV"></div>
+          </div>
+          <hr class="separator-mid">
+          <div class="confirm">
+            <div class="confirm-block">
+              <div class="total-price">總價：新台幣 <span id="confirm-price">2000</span> 元</div>
+            </div>
+            <div class="confirm-block">
+              <div class="confirm-btn">確認訂購並付款</div>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" id="empty-state">目前沒有任何待預訂的行程</div>
+      </div>
+    </div>
+  </div>
+  <div id="popup-dialog"></div>
+  <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
+  <script src="/static/shared/shared_js.js"></script>
+  <script>
+    function renderBookingInfor (data, tokenData) {
+      // booking information
+      let attrData = data.data.attraction;
+      let attrImg = attrData.image;
+      let attrName = attrData.name;
+      let attrAddr = attrData.address;
+      let date = data.data.date;
+      let time = data.data.time;
+      let price = data.data.price;
+      document.getElementById("sec-pic-img").src = attrImg;
+      document.getElementById("sec-frame-name").innerHTML = attrName;
+      document.getElementById("infor-date").innerHTML = date;
+      let timeText;
+      if (time == "morning") {
+        timeText = "早上 9 點到下午 4 點";
+      } else if (time == "afternoon") {
+        timeText = "下午 2 點到晚上 9 點";
+      }
+      document.getElementById("infor-time").innerHTML = timeText;
+      document.getElementById("infor-price").innerHTML = price;
+      document.getElementById("infor-address").innerHTML = attrAddr;
+      // contact information
+      let userName = tokenData.name;
+      let userEmail = tokenData.email;
+      document.getElementById("contact-input-name").value = userName;
+      document.getElementById("contact-input-email").value = userEmail;
+    }
+
+    function renderBookingPage (tokenData) {
+      let auth = "Bearer " + localStorage.getItem("token");
+      fetch("/api/booking", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data) {
+          renderBookingInfor(data, tokenData);
+          document.getElementById("booking-infor").style.display = "flex";
+          document.getElementById("empty-state").style.display = "none";
+        } else {
+          document.getElementById("booking-infor").style.display = "none";
+          document.getElementById("empty-state").style.display = "block";
+        }
+      })
+    }
+
+    function renderHeadline(tokenData) {
+      let userName = tokenData.name;
+      headlineText = "您好，" + userName + "，待預訂的行程如下："
+      document.getElementById("headline").innerHTML = headlineText;
+    }
+
+    // check sign-in status
+    loadSignInPage(function(tokenData) {
+      if (!tokenData) {
+        location.href = "/";
+      }
+      // fetch booking api and render the page
+      renderHeadline(tokenData);
+      renderBookingPage(tokenData);
+    });
+    
+    // delete booking data
+    function deleteBooking() {
+      let auth = "Bearer " + localStorage.getItem("token");
+      fetch("/api/booking", {method: "DELETE", headers: {"Authorization": auth}}).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+      }).then(function () {
+        location.reload();
+      })
+    }
+
+  </script>
   
 </body>
 </html>

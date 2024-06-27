@@ -54,6 +54,7 @@ def turn_data_to_list(data) -> list:
 		data_dict_lst = []
 	return data_dict_lst
 
-
+SECRET_KEY = "795d853bab511ea0bb3f38759ad70162122c92747df8fdc19fd9830cdebb5250"
+ALGORITHM = "HS256"
 
 		

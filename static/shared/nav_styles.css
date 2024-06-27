@@ -1,3 +1,11 @@
+body{
+    margin: 0;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .navigation{
     display: flex;
     height: 54px;
@@ -46,4 +54,27 @@
 }
 .nav-right:hover{
     text-decoration: underline;
+}
+
+.separator{
+    margin-top: 54px;
+    margin-bottom: 0px;
+    border: none;
+}
+
+
+.footer{
+    flex: 1;
+    width: 100%;
+    height: auto;
+    min-height: 24px;
+    background-color: #757575;
+    display: flex;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
 }

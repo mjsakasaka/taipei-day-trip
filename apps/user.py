@@ -56,8 +56,8 @@ async def sign_up(request: Request, user_info: UserInfo):
 # get current user information
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-SECRET_KEY = "795d853bab511ea0bb3f38759ad70162122c92747df8fdc19fd9830cdebb5250"
-ALGORITHM = "HS256"
+SECRET_KEY = utils.SECRET_KEY
+ALGORITHM = utils.ALGORITHM
 
 def decode_token(token: str):
 	try:
