@@ -13,7 +13,8 @@
 }
 .booking{
     width: 100%;
-    display: flex;
+    /* display: flex; */
+    display: none;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -51,6 +52,7 @@
     top: 0px;
     width: 30px;
     height: 30px;
+    cursor: pointer;
 }
 .sec-del-icon img{
     width: 30px;
@@ -224,11 +226,11 @@
 
 @media (max-width: 500px){
     .headline{
-        width: 95%;
+        width: 93%;
         min-width: 340px;
     }
     .section{
-        width: 95%;
+        width: 93%;
         min-width: 340px;
     }
     .sec-pic{
@@ -236,15 +238,20 @@
         min-width: 340px;
     }
     .separator-mid{
-        width: 95%;
+        width: 93%;
         min-width: 340px;
     }
     .context{
-        width: 95%;
+        width: 93%;
         min-width: 340px;
     }
     .confirm{
-        width: 95%;
+        width: 93%;
+        min-width: 340px;
+    }
+
+    .empty-state{
+        width: 93%;
         min-width: 340px;
     }
 }

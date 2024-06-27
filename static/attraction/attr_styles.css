@@ -172,11 +172,13 @@
     width: 24px;
     height: 24px;
     margin: 5px;
+    cursor: pointer;
 }
 .bk-time-checkbox{
     margin-left: 15px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .checkbox{
     display: none;
@@ -216,12 +218,11 @@
     padding: 10px 20px 10px 20px;
     border: none;
     margin-top: 10px;
-}
-.bk-btn span{
     color: #FFFFFF;
     font-size: 19px;
     line-height: 18px;
     font-weight: 400;
+    cursor: pointer;
 }
 .separator-mid{
     margin-top: 40px;

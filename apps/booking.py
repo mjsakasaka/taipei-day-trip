@@ -1,7 +1,8 @@
 from datetime import date
 from fastapi import *
-from fastapi.exceptions import ValidationException
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from fastapi.requests import Request
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from pydantic import BaseModel, ValidationError
@@ -52,7 +53,14 @@ async def get_unbooked_infor(token_data: dict | None = Depends(decode_token)):
         return None
     
 
-# create new schedule
+# create new booking
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    response_msg = {
+        "error": True, 
+        "message": "input validation error"
+    }
+    return JSONResponse(response_msg, status_code=400)
+
 class Schedule(BaseModel):
     attractionId: int
     date: date

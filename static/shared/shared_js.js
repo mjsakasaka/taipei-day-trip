@@ -1,24 +1,44 @@
 // check sign-in status
-document.addEventListener("DOMContentLoaded", function () {
+function getTokenData() {
     let token = localStorage.getItem("token");
-    let navSigninDiv = document.getElementById("nav-signin");
-    if (token) {
-        navSigninDiv.innerHTML = "登出系統";
-        navSigninDiv.setAttribute("data-status", "true");
-        let auth = "Bearer " + token;
+    let auth = "Bearer " + token;
+    let p = new Promise(function (resolve) {
         fetch("/api/user/auth", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
             return response.json();
         }).then(function (data) {
-            if (data != null) {
+            let tokenData;
+            if (data == null) {
+                tokenData = null;
+            } else if (data.data) {
+                tokenData = data.data;
+            } else {
+                check = null;
+            }
+            resolve(tokenData);
+        })
+    })
+    return p;
+}
+
+function loadSignInPage (callback) {
+    document.addEventListener("DOMContentLoaded", function () {
+        let navSigninDiv = document.getElementById("nav-signin");
+        navSigninDiv.innerHTML = "";
+        navSigninDiv.setAttribute("data-status", "false");
+        getTokenData().then(function(tokenData) {
+            if (tokenData) {
                 navSigninDiv.innerHTML = "登出系統";
                 navSigninDiv.setAttribute("data-status", "true");
             } else {
                 navSigninDiv.innerHTML = "登入/註冊";
                 navSigninDiv.setAttribute("data-status", "false");
             }
+            callback(tokenData)
         })
-    }
-});
+    });
+}
+
+
 
 
 // link on website title
@@ -39,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // show dialog
 function showSigninDialog() {
+    document.getElementById("signin-msg").style.display = "none";
     document.getElementById("popup-dialog").style.display = "block";
 }
 
@@ -50,12 +71,14 @@ function closeDialog() {
 
 // change to signup
 function changeToSignup() {
+    document.getElementById("signup-msg").style.display = "none";
     document.getElementById("dialog-signin").style.display = "none";
     document.getElementById("dialog-signup").style.display = "block";
 }
 
 // change to signin
 function changeToSignin() {
+    document.getElementById("signin-msg").style.display = "none";
     document.getElementById("dialog-signin").style.display = "block";
     document.getElementById("dialog-signup").style.display = "none";
 }
@@ -79,7 +102,8 @@ document.getElementById("nav-signin").addEventListener("click", function () {
 });
 
 // sign up procedure
-function signUp () {
+function signUp(event) {
+    event.preventDefault();
     let name = document.getElementById("signup-name").value;
     let email = document.getElementById("signup-email").value;
     let password = document.getElementById("signup-pwd").value;
@@ -102,21 +126,34 @@ function signUp () {
 }
 
 // sign in procedure
-function signIn () {
-let email = document.getElementById("signin-email").value;
-let password = document.getElementById("signin-pwd").value;
-let bodyData = {"email": email, "password": password};
-fetch("/api/user/auth", {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(bodyData)}).then(function (response) {
-    return response.json();
-}).then(function (data) {
-    if (data.token) {
-        localStorage.setItem("token", data.token);
-        location.reload();
-    } else if (data.error) {
-        let msgDiv = document.getElementById("signin-msg");
-        msgDiv.style.display = "block";
-        msgDiv.style.color = "red";
-        msgDiv.innerHTML = "賬號或密碼錯誤";
-    }
-})
+function signIn(event) {
+    event.preventDefault();
+    let email = document.getElementById("signin-email").value;
+    let password = document.getElementById("signin-pwd").value;
+    let bodyData = {"email": email, "password": password};
+    fetch("/api/user/auth", {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(bodyData)}).then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        if (data.token) {
+            localStorage.setItem("token", data.token);
+            location.reload();
+        } else if (data.error) {
+            let msgDiv = document.getElementById("signin-msg");
+            msgDiv.style.display = "block";
+            msgDiv.style.color = "red";
+            msgDiv.innerHTML = "賬號或密碼錯誤";
+        }
+    });
 }
+
+// booking button
+document.getElementById("nav-booking").addEventListener("click", function() {
+    // check sign-in status
+    getTokenData().then(function (tokenData) {
+        if (tokenData) {
+            location.href = "/booking";
+        } else {
+            showSigninDialog();
+        }
+    });
+});

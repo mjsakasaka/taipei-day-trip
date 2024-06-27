@@ -1,11 +1,12 @@
 from fastapi import *
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from apps.attractions import attrac
 from apps.mrt import mrt
 from apps.user import user
-from apps.booking import book
+from apps.booking import book, validation_exception_handler
 import uvicorn
 app = FastAPI()
 
@@ -44,6 +45,8 @@ app.include_router(user, tags=["User"])
 app.include_router(attrac)
 app.include_router(mrt)
 app.include_router(book, tags=["Booking"])
+# app.add_exception_handler(RequestValidationError, validation_exception_handler)
+
 
 
 if __name__ == '__main__':
