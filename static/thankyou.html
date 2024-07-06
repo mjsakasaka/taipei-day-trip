@@ -37,11 +37,15 @@
   
   <script src="/static/shared/shared_js.js"></script>
   <script>
-    loadSignInPage(function(e){
-      const url = new URL(window.location.href);
-      const params = new URLSearchParams(url.search);
-      const orderNumber = params.get('number');
-      document.getElementById("order-number").innerHTML = orderNumber;
+    loadSignInPage(function(tokenData){
+      if (!tokenData) {
+        location.href = "/";
+      } else {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        const orderNumber = params.get('number');
+        document.getElementById("order-number").innerHTML = orderNumber;
+      }
     });
   </script>
 
