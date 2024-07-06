@@ -86,6 +86,13 @@
     width: 1200px;
 }
 
+.payment-form{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .context{
     width: 980px;
     color: #666666;
@@ -104,12 +111,16 @@
     font-weight: 400;
     line-height: 38px;
     margin-top: 15px;
+    display: flex;
 }
 .input-field{
     width: 200px;
     height: 38px;
+    /* font-family: 'Noto Sans TC', sans-serif; */
+    font-family: sans-serif;
     font-size: 16px;
-    font-weight: 500;
+    /* font-weight: 500; */
+    font-weight: 400;
     border: 1px solid #E8E8E8;
     border-radius: 5px;
     padding: 10px;
@@ -141,6 +152,7 @@
 .confirm-btn{
     width: 173px;
     height: 36px;
+    border: 0px;
     border-radius: 5px;
     background-color: #448899;
     color: #FFFFFF;
@@ -151,6 +163,7 @@
     line-height: 36px;
     margin-top: 22px;
     margin-bottom: 22px;
+    cursor: pointer;
 }
 .empty-state{
     display: none;

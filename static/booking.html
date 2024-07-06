@@ -38,35 +38,37 @@
               </div>
               <div class="sec-frame-title"><span>台北一日遊：</span><span id="sec-frame-name"></span></div>
               <div class="sec-frame"><span class="sec-frame-attri">日期：</span><span id="infor-date"></span></div>
-              <div class="sec-frame"><span class="sec-frame-attri">時間：</span><span id="infor-time"></span></div>
+              <div class="sec-frame"><span class="sec-frame-attri">時間：</span><span id="infor-time" data-time=""></span></div>
               <div class="sec-frame"><span class="sec-frame-attri">費用：</span><span id="infor-price"></span></div>
               <div class="sec-frame"><span class="sec-frame-attri">地點：</span><span id="infor-address"></span></div>
             </div>
           </div>
           <hr class="separator-mid">
-          <div class="context">
-            <div class="context-title">您的聯絡資訊</div>
-            <div class="field">聯絡姓名：<input class="input-field" id="contact-input-name"></div>
-            <div class="field">連絡信箱：<input class="input-field" id="contact-input-email"></div>
-            <div class="field">手機號碼：<input class="input-field" id="contact-input-phone"></div>
-            <div class="context-text">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
-          </div>
-          <hr class="separator-mid">
-          <div class="context">
-            <div class="context-title">信用卡付款資訊</div>
-            <div class="field">卡片號碼：<input class="input-field" placeholder="**** **** **** ****"></div>
-            <div class="field">過期時間：<input class="input-field" placeholder="MM/YY"></div>
-            <div class="field">驗證密碼：<input class="input-field" placeholder="CVV"></div>
-          </div>
-          <hr class="separator-mid">
-          <div class="confirm">
-            <div class="confirm-block">
-              <div class="total-price">總價：新台幣 <span id="confirm-price">2000</span> 元</div>
+          <form class="payment-form" id="payment-form">
+            <div class="context">
+              <div class="context-title">您的聯絡資訊</div>
+              <div class="field">聯絡姓名：<input class="input-field" id="contact-input-name" required></div>
+              <div class="field">連絡信箱：<input class="input-field" id="contact-input-email" required></div>
+              <div class="field">手機號碼：<input class="input-field" id="contact-input-phone" required></div>
+              <div class="context-text">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
             </div>
-            <div class="confirm-block">
-              <div class="confirm-btn">確認訂購並付款</div>
+            <hr class="separator-mid">
+            <div class="context">
+              <div class="context-title">信用卡付款資訊</div>
+              <div class="field">卡片號碼：<div class="input-field" id="card-number"></div></div>
+              <div class="field">過期時間：<div class="input-field" id="card-expiration-date"></div></div>
+              <div class="field">驗證密碼：<div class="input-field" id="card-ccv"></div></div>
             </div>
-          </div>
+            <hr class="separator-mid">
+            <div class="confirm">
+              <div class="confirm-block">
+                <div class="total-price">總價：新台幣 <span id="confirm-price"></span> 元</div>
+              </div>
+              <div class="confirm-block">
+                <input type="submit" class="confirm-btn" id="confirm-btn" value="確認訂購並付款">
+              </div>
+            </div>
+          </form>
         </div>
         <div class="empty-state" id="empty-state">目前沒有任何待預訂的行程</div>
       </div>
@@ -74,11 +76,13 @@
   </div>
   <div id="popup-dialog"></div>
   <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
+  
   <script src="/static/shared/shared_js.js"></script>
   <script>
     function renderBookingInfor (data, tokenData) {
       // booking information
       let attrData = data.data.attraction;
+      let attrId = attrData.id;
       let attrImg = attrData.image;
       let attrName = attrData.name;
       let attrAddr = attrData.address;
@@ -87,6 +91,7 @@
       let price = data.data.price;
       document.getElementById("sec-pic-img").src = attrImg;
       document.getElementById("sec-frame-name").innerHTML = attrName;
+      document.getElementById("sec-frame-name").setAttribute("data-id", attrId);
       document.getElementById("infor-date").innerHTML = date;
       let timeText;
       if (time == "morning") {
@@ -95,7 +100,9 @@
         timeText = "下午 2 點到晚上 9 點";
       }
       document.getElementById("infor-time").innerHTML = timeText;
+      document.getElementById("infor-time").setAttribute("data-time", time);
       document.getElementById("infor-price").innerHTML = price;
+      document.getElementById("confirm-price").innerHTML = price;
       document.getElementById("infor-address").innerHTML = attrAddr;
       // contact information
       let userName = tokenData.name;
@@ -104,11 +111,21 @@
       document.getElementById("contact-input-email").value = userEmail;
     }
 
+    function fetch_booking_data () {
+      let auth = "Bearer " + localStorage.getItem("token");
+      let p = new Promise(function (resolve) {
+        fetch("/api/booking", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          resolve(data);
+        })
+      })
+      return p;
+    }
+
     function renderBookingPage (tokenData) {
       let auth = "Bearer " + localStorage.getItem("token");
-      fetch("/api/booking", {method: "GET", headers: {"Authorization": auth}}).then(function (response) {
-        return response.json();
-      }).then(function (data) {
+      fetch_booking_data().then(function (data) {
         if (data) {
           renderBookingInfor(data, tokenData);
           document.getElementById("booking-infor").style.display = "flex";
@@ -149,6 +166,120 @@
     }
 
   </script>
-  
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+  <script>
+    // Setup the TapPay SDK
+    TPDirect.setupSDK(151818, 'app_88SWbgS5HT1Ik2Z3S5ANg0FTkfR9X8xOBrH9ZQicmQItLaCxMB2V9FR8UqYg', 'sandbox');
+    // Setup the card fields
+    let fields = {
+      number: {
+        element: '#card-number',
+        placeholder: '**** **** **** ****'
+      },
+      expirationDate: {
+        element: '#card-expiration-date',
+        placeholder: 'MM / YY'
+      },
+      ccv: {
+        element: '#card-ccv',
+        placeholder: 'CCV'
+      }
+    }
+    TPDirect.card.setup({
+      fields: fields,
+      styles: {
+        ".invalid": {
+          'color': 'red'
+        },
+        ".valid": {
+          'color': 'green'
+        },
+        "input": {
+          "font-family": "'Noto Sans TC', sans-serif",
+          "font-size": "16px",
+          "font-weight": "400"
+        }
+      }
+    });
+    // get necessary information
+    function set_request_body(prime) {
+      let p = new Promise(function(resolve) {
+        fetch_booking_data().then(function(data) {
+          // attraction {id name address image}
+          let attrData = data.data.attraction;
+          let id = attrData.id;
+          let name = attrData.name;
+          let address = attrData.address;
+          let image = attrData.image;
+          let attraction = {"id": id, "name": name, "address": address, "image": image};
+          // trip {attraction date time}
+          let date = data.data.date;
+          let time = data.data.time;
+          let trip = {"attraction": attraction, "date": date, "time": time};
+          // contact {name, email, phone}
+          let conName = document.getElementById("contact-input-name").value;
+          let email = document.getElementById("contact-input-email").value;
+          let phone = document.getElementById("contact-input-phone").value;
+          let contact = {"name": conName, "email": email, "phone": phone};
+          // order {price trip contact}
+          let price = data.data.price;
+          let order = {"price": price, "trip": trip, "contact": contact};
+          // request_body {prime order}
+          let body = {"prime": prime, "order": order};
+          resolve(body);
+        })
+      });
+      return p;
+      // 
+    }
+    
+    document.getElementById("payment-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      // 取得 TapPay Fields 的 status
+      const tappayStatus = TPDirect.card.getTappayFieldsStatus()
+
+      // 確認是否可以 getPrime
+      if (tappayStatus.canGetPrime === false) {
+        alert('can not get prime')
+        return
+      }
+
+      TPDirect.card.getPrime(async function(result) {
+        if (result.status !== 0) {
+          alert(result.msg);
+        } else {
+
+          let tokenData = await getTokenData();
+          if (!tokenData) {
+            window.location.href = "/";
+          } else {
+            let prime = result.card.prime;
+            let body = await set_request_body(prime);
+            let auth = "Bearer " + localStorage.getItem("token");
+            fetch("/api/orders", {
+              method: "POST", 
+              headers: {"Authorization": auth, "Content-Type": "application/json"}, 
+              body: JSON.stringify(body)
+            }).then(function(response){
+              return response.json();
+            }).then(function(data){
+              if (data.error) {
+                alert("error: ", data.message);
+              } else if (data.data) {
+                let number = data.data.number;
+                url = "/thankyou?number=" + number;
+                window.location.href = url;
+                let auth = "Bearer " + localStorage.getItem("token");
+                fetch("/api/booking", {method: "DELETE", headers: {"Authorization": auth}})
+              } else {
+                alert("failed: unknown error");
+              }
+            })
+          }
+
+        }
+      })
+    })
+  </script>
 </body>
 </html>

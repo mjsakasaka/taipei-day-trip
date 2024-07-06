@@ -4,8 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thank You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/shared/nav_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/shared/dialog_styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/thankyou/thankyou_styles.css">
+
 </head>
 <body>
+  <div class="wrapper">
+    <div class="navigation">
+      <div class="nav-container">
+        <div class="nav-title" id="nav-title">台北一日遊</div>
+        <div class="nav-right-container">
+          <div class="nav-right" id="nav-booking">預定行程</div>
+          <div class="nav-right" id="nav-signin" data-status="false"></div>
+        </div>
+      </div>
+    </div>
+    <hr class="separator">
+    <div class="main">
+      <div class="main-section">
+        <div class="main-title">行程預定成功<br>您的訂單編號如下</div>
+        <div class="order-number" id="order-number"></div>
+        <div class="main-text">請記住此編號，或到會員中心查看歷史訂單</div>
+      </div>
+    </div>
+  </div>
+  <div id="popup-dialog"></div>
+  <footer class="footer" id="footer">COPYRIGHT © 2021 台北一日遊</footer>
   
+  <script src="/static/shared/shared_js.js"></script>
+  <script>
+    loadSignInPage(function(e){
+      const url = new URL(window.location.href);
+      const params = new URLSearchParams(url.search);
+      const orderNumber = params.get('number');
+      document.getElementById("order-number").innerHTML = orderNumber;
+    });
+  </script>
+
 </body>
 </html>

@@ -6,7 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from apps.attractions import attrac
 from apps.mrt import mrt
 from apps.user import user
-from apps.booking import book, validation_exception_handler
+from apps.booking import book
+from apps.order import order
 import uvicorn
 app = FastAPI()
 
@@ -45,8 +46,7 @@ app.include_router(user, tags=["User"])
 app.include_router(attrac)
 app.include_router(mrt)
 app.include_router(book, tags=["Booking"])
-# app.add_exception_handler(RequestValidationError, validation_exception_handler)
-
+app.include_router(order, tags=["order"])
 
 
 if __name__ == '__main__':
