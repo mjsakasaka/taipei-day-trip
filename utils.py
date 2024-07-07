@@ -57,4 +57,19 @@ def turn_data_to_list(data) -> list:
 SECRET_KEY = "795d853bab511ea0bb3f38759ad70162122c92747df8fdc19fd9830cdebb5250"
 ALGORITHM = "HS256"
 
-		
+from fastapi import *
+from fastapi.security import OAuth2PasswordBearer
+import jwt
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+def decode_token(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        data = payload.get("data")
+        if data is None:
+            return None
+        return data
+    except:
+        return None
+	
