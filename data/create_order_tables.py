@@ -34,17 +34,7 @@ CREATE TABLE payment (
     FOREIGN KEY (order_number) REFERENCES orders(order_number)
 );
 '''
-pending_query = '''
-CREATE TABLE pending (
-	userId INT NOT NULL,
-	attractionId INT NOT NULL,
-	date DATE NOT NULL,
-	time VARCHAR(255) NOT NULL,
-	price INT NOT NULL,
-	FOREIGN KEY(userId) REFERENCES userInfo(id),
-	FOREIGN KEY(attractionId) REFERENCES taipei_attractions(id)
-); 
-'''
+
 cursor.execute(order_query)
 cursor.execute(payment_query)
 con.commit()
